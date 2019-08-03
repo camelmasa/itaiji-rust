@@ -4,24 +4,25 @@ set -ex
 
 main() {
     local src=$(pwd) \
-          stage=
+          stage= \
+          ext=
 
     case $TRAVIS_OS_NAME in
         linux)
             stage=$(mktemp -d)
+            ext=so
             ;;
         osx)
             stage=$(mktemp -d -t tmp)
+            ext=dylib
             ;;
     esac
 
     test -f Cargo.lock || cargo generate-lockfile
 
-    # TODO Update this to build the artifacts that matter to you
     cross rustc --target $TARGET --release
 
-    # TODO Update this to package the right artifacts
-    cp target/$TARGET/release/libitaiji $stage/
+    cp target/$TARGET/release/libitaiji.$ext $stage/
 
     cd $stage
     tar czf $src/$CRATE_NAME-$TRAVIS_TAG-$TARGET.tar.gz *
