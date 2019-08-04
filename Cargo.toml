@@ -12,3 +12,6 @@ lazy_static = "1.3.0"
 [lib]
 name = "itaiji"
 crate-type = ["dylib"]
+
+[target.x86_64-unknown-linux-musl]
+crt_static = false
